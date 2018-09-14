@@ -10,8 +10,8 @@ import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BarcodeAdapter extends RecyclerView.Adapter<BarcodeAdapter.BarcodeViewHolder> {
-    private List<Barcode> barcodeList = new LinkedList<>();
+public class BarcodeListAdapter extends RecyclerView.Adapter<BarcodeListAdapter.BarcodeViewHolder> {
+    private List<BarcodeItem> barcodeItemList = new LinkedList<>();
 
     @NonNull
     @Override
@@ -23,21 +23,21 @@ public class BarcodeAdapter extends RecyclerView.Adapter<BarcodeAdapter.BarcodeV
 
     @Override
     public void onBindViewHolder(@NonNull BarcodeViewHolder holder, int position) {
-        holder.bind(barcodeList.get(position));
+        holder.bind(barcodeItemList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return barcodeList.size();
+        return barcodeItemList.size();
     }
 
-    public void setItems(Barcode barcode) {
-        barcodeList.add(barcode);
+    public void setItems(BarcodeItem barcodeItem) {
+        barcodeItemList.add(barcodeItem);
         notifyDataSetChanged();
     }
 
     public void clearItems() {
-        barcodeList.clear();
+        barcodeItemList.clear();
         notifyDataSetChanged();
     }
 
@@ -53,10 +53,10 @@ public class BarcodeAdapter extends RecyclerView.Adapter<BarcodeAdapter.BarcodeV
             barcodeTime = itemView.findViewById(R.id.barcode_time);
         }
 
-        void bind(Barcode barcode) {
-            barcodeValue.setText(barcode.getValue());
-            barcodeDate.setText(barcode.getDate());
-            barcodeTime.setText(barcode.getTime());
+        void bind(BarcodeItem barcodeItem) {
+            barcodeValue.setText(barcodeItem.getValue());
+            barcodeDate.setText(barcodeItem.getDate());
+            barcodeTime.setText(barcodeItem.getTime());
         }
     }
 }

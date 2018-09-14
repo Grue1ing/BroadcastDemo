@@ -13,20 +13,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String BARCODE_INTENT_KEY = "barcode_string";
     private static final String ACTION = "android.intent.ACTION_DECODE_DATA";
 
-    private BarcodeAdapter barcodeAdapter;
+    private BarcodeListAdapter barcodeListAdapter;
     BroadcastReceiver broadcastReceiver;
 
     FloatingActionButton btnAdd;
@@ -40,10 +36,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         broadcastReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
+                Date dateNow = new Date();
+                SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
+                SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:ss");
+
                 String value = intent.getStringExtra(BARCODE_INTENT_KEY);
                 if (!value.isEmpty()) {
-                    Barcode barcode = new Barcode(value);
-                    barcodeAdapter.setItems(barcode);
+                    BarcodeItem barcodeItem = new BarcodeItem(value, formatForDateNow.format(dateNow),
+                            formatForTimeNow.format(dateNow));
+                    barcodeListAdapter.setItems(barcodeItem);
                 }
             }
         };
@@ -57,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initRecyclerView() {
         RecyclerView barcodeRecyclerView = findViewById(R.id.barcode_recycler_view);
-        barcodeAdapter = new BarcodeAdapter();
-        barcodeRecyclerView.setAdapter(barcodeAdapter);
+        barcodeListAdapter = new BarcodeListAdapter();
+        barcodeRecyclerView.setAdapter(barcodeListAdapter);
         barcodeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         barcodeRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        barcodeAdapter.clearItems();
+        barcodeListAdapter.clearItems();
         return super.onOptionsItemSelected(item);
     }
 
