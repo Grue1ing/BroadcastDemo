@@ -1,6 +1,6 @@
 package com.example.broadcastdemo;
 
-
+//Class contains barcode, scan date and time
 class BarcodeItem {
     private String value;
     private String date;

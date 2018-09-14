@@ -32,11 +32,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize RecyclerView
         initRecyclerView();
 
+        //creating broadcast receiver
         broadcastReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
+                // creating current date and time
                 Date dateNow = new Date();
+                // create two format for divide date by date and time
                 SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
                 SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:ss");
 
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IntentFilter intentFilter = new IntentFilter(ACTION);
         registerReceiver(broadcastReceiver, intentFilter);
 
+        // Floating action button
         btnAdd = findViewById(R.id.floatingActionButton);
         btnAdd.setOnClickListener(this);
     }

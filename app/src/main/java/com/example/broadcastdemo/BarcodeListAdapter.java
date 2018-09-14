@@ -31,11 +31,13 @@ public class BarcodeListAdapter extends RecyclerView.Adapter<BarcodeListAdapter.
         return barcodeItemList.size();
     }
 
+    // function for addition barcode item
     public void setItems(BarcodeItem barcodeItem) {
         barcodeItemList.add(barcodeItem);
         notifyDataSetChanged();
     }
 
+    // function for delete barcode item
     public void clearItems() {
         barcodeItemList.clear();
         notifyDataSetChanged();
