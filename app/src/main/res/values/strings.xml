@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BroadcastDemo</string>
+    <string name="clear">Clear all</string>
+</resources>
