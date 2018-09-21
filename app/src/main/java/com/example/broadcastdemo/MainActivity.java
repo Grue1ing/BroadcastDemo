@@ -13,14 +13,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String BARCODE_INTENT_KEY = "barcode_string";
+    private static final String BARCODE_INTENT_KEY = "barcode";
     private static final String ACTION = "android.intent.ACTION_DECODE_DATA";
+
+    RecyclerView barcodeRecyclerView;
 
     private BarcodeListAdapter barcodeListAdapter;
     BroadcastReceiver broadcastReceiver;
@@ -44,11 +50,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd");
                 SimpleDateFormat formatForTimeNow = new SimpleDateFormat("hh:mm:ss");
 
-                String value = intent.getStringExtra(BARCODE_INTENT_KEY);
+                String value = new String(intent.getExtras().getByteArray(BARCODE_INTENT_KEY), Charset.defaultCharset());
+
                 if (!value.isEmpty()) {
                     BarcodeItem barcodeItem = new BarcodeItem(value, formatForDateNow.format(dateNow),
                             formatForTimeNow.format(dateNow));
-                    barcodeListAdapter.setItems(barcodeItem);
+                    barcodeListAdapter.setItem(barcodeItem);
+                    barcodeRecyclerView.smoothScrollToPosition(0);
                 }
             }
         };
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initRecyclerView() {
-        RecyclerView barcodeRecyclerView = findViewById(R.id.barcode_recycler_view);
+        barcodeRecyclerView = findViewById(R.id.barcode_recycler_view);
         barcodeListAdapter = new BarcodeListAdapter();
         barcodeRecyclerView.setAdapter(barcodeListAdapter);
         barcodeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -92,15 +100,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sendBarcode(generateBarcode());
     }
 
-    private void sendBarcode(String value) {
+    private void sendBarcode(byte[] value) {
         Intent intent = new Intent(ACTION);
         intent.putExtra(BARCODE_INTENT_KEY, value);
         sendBroadcast(intent);
     }
 
-    private String generateBarcode() {
+    private byte[] generateBarcode() {
         Random random = new Random();
-        return "20000000" + random.nextInt(10) + random.nextInt(10) +
+        String res = "20000000" + random.nextInt(10) + random.nextInt(10) +
                 random.nextInt(10) + random.nextInt(10) + random.nextInt(10);
+        return res.getBytes(Charset.defaultCharset());
     }
 }

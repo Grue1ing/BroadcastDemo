@@ -32,9 +32,9 @@ public class BarcodeListAdapter extends RecyclerView.Adapter<BarcodeListAdapter.
     }
 
     // function for addition barcode item
-    public void setItems(BarcodeItem barcodeItem) {
-        barcodeItemList.add(barcodeItem);
-        notifyDataSetChanged();
+    public void setItem(BarcodeItem barcodeItem) {
+        barcodeItemList.add(0, barcodeItem);
+        notifyItemInserted(0);
     }
 
     // function for delete barcode item
